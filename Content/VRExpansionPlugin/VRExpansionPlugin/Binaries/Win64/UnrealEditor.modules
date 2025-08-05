@@ -1,8 +1,0 @@
-{
-	"BuildId": "43139311",
-	"Modules": 
-	{
-		"VRExpansionEditor": "UnrealEditor-VRExpansionEditor.dll",
-		"VRExpansionPlugin": "UnrealEditor-VRExpansionPlugin.dll"
-	}
-}

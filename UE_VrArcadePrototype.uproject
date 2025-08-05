@@ -3,6 +3,13 @@
 	"EngineAssociation": "5.6",
 	"Category": "",
 	"Description": "",
+	"Modules": [
+		{
+			"Name": "UE_VrArcadePrototype",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
 	"Plugins": [
 		{
 			"Name": "OpenXR",
@@ -11,16 +18,40 @@
 				"Win64",
 				"Linux",
 				"Android",
-				"VisionOS"
+				"HoloLens"
 			]
 		},
 		{
-			"Name": "OpenXREyeTracker",
+			"Name": "VRExpansionPlugin",
 			"Enabled": true,
 			"SupportedTargetPlatforms": [
 				"Win64",
 				"Linux",
-				"Android"
+				"Android",
+				"HoloLens"
+			]
+		},
+		{
+			"Name": "OnlineSubsystemSteam",
+			"Enabled": true
+		},
+		{
+			"Name": "OpenXRExpansionPlugin",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Linux",
+				"Android",
+				"HoloLens"
+			]
+		},
+		{
+			"Name": "SteamVR",
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"Win32",
+				"Win64",
+				"Linux"
 			]
 		},
 		{
@@ -30,22 +61,16 @@
 				"Win64",
 				"Linux",
 				"Android",
-				"VisionOS"
+				"HoloLens"
 			]
+		},
+		{
+			"Name": "Mover",
+			"Enabled": true
+		},
+		{
+			"Name": "MoverExamples",
+			"Enabled": true
 		}
-	],
-	"TargetPlatforms": [
-		"Android",
-		"IOS",
-		"Linux",
-		"Mac",
-		"PS4",
-		"PS5",
-		"Windows",
-		"WindowsNoEditor",
-		"Switch",
-		"XboxOne",
-		"XSX",
-		"VisionOS"
 	]
 }
