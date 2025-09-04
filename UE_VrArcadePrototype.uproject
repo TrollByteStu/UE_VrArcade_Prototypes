@@ -81,6 +81,10 @@
 		{
 			"Name": "PCGInstancedActorsInterop",
 			"Enabled": true
+		},
+		{
+			"Name": "Soundscape",
+			"Enabled": true
 		}
 	]
 }
