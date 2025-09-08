@@ -85,6 +85,10 @@
 		{
 			"Name": "Soundscape",
 			"Enabled": true
+		},
+		{
+			"Name": "USDImporter",
+			"Enabled": true
 		}
 	]
 }
