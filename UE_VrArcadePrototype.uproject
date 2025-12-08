@@ -89,10 +89,6 @@
 		{
 			"Name": "USDImporter",
 			"Enabled": true
-		},
-		{
-			"Name": "PCGExtendedToolkit",
-			"Enabled": true
 		}
 	]
 }
