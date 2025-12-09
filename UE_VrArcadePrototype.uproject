@@ -89,6 +89,10 @@
 		{
 			"Name": "USDImporter",
 			"Enabled": true
+		},
+		{
+			"Name": "ImpostorBaker",
+			"Enabled": true
 		}
 	]
 }
