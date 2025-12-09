@@ -93,6 +93,10 @@
 		{
 			"Name": "ImpostorBaker",
 			"Enabled": true
+		},
+		{
+			"Name": "GPULightmass",
+			"Enabled": true
 		}
 	]
 }
