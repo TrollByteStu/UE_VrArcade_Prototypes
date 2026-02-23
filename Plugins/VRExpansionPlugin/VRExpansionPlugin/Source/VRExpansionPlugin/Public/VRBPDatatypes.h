@@ -770,14 +770,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Replication, AdvancedDisplay)
 		EVRRotationQuantization RotationQuantizationLevel;
 
-	FORCEINLINE uint16 CompressAxisTo10BitShort(float Angle)
+	FORCEINLINE static uint16 CompressAxisTo10BitShort(float Angle)
 	{
 		// map [0->360) to [0->1024) and mask off any winding
 		return FMath::RoundToInt(Angle * 1024.f / 360.f) & 0xFFFF;
 	}
 
 
-	FORCEINLINE float DecompressAxisFrom10BitShort(uint16 Angle)
+	FORCEINLINE static float DecompressAxisFrom10BitShort(uint16 Angle)
 	{
 		// map [0->1024) to [0->360)
 		return (Angle * 360.f / 1024.f);
@@ -1243,19 +1243,25 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AdvancedGripSettings")
 		bool bDisallowLerping;
 
+	// If true, we will not set the position on grip release of a client auth grip
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AdvancedGripSettings")
+		bool bDisallowSettingPositionOnClientAuthDrop;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AdvancedGripSettings")
 		FBPAdvGripPhysicsSettings PhysicsSettings;
 
 	FBPAdvGripSettings() :
 		GripPriority(1),
 		bSetOwnerOnGrip(1),
-		bDisallowLerping(0)
+		bDisallowLerping(0),
+		bDisallowSettingPositionOnClientAuthDrop(0)
 	{}
 
 	FBPAdvGripSettings(int GripPrio) :
 		GripPriority(GripPrio),
 		bSetOwnerOnGrip(1),
-		bDisallowLerping(0)
+		bDisallowLerping(0),
+		bDisallowSettingPositionOnClientAuthDrop(0)
 	{}
 };
 
