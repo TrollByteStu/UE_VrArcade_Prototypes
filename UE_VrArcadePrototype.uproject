@@ -13,13 +13,7 @@
 	"Plugins": [
 		{
 			"Name": "OpenXR",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Linux",
-				"LinuxArm64",
-				"Android"
-			]
+			"Enabled": true
 		},
 		{
 			"Name": "VRExpansionPlugin",
@@ -58,13 +52,7 @@
 		},
 		{
 			"Name": "OpenXRHandTracking",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Linux",
-				"LinuxArm64",
-				"Android"
-			]
+			"Enabled": true
 		},
 		{
 			"Name": "Mover",
