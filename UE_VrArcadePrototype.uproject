@@ -95,9 +95,18 @@
 			"Enabled": true
 		},
 		{
+<<<<<<< HEAD
 			"Name": "PaperZD",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/c4b43502026047d89296cd7bffd92828"
+=======
+			"Name": "JsonBlueprintUtilities",
+			"Enabled": true
+		},
+		{
+			"Name": "HttpBlueprint",
+			"Enabled": true
+>>>>>>> ff04c055a468934d5b0674746d240f279db3cde1
 		}
 	]
 }
