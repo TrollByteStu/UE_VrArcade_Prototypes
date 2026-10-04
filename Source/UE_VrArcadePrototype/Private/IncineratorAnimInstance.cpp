@@ -107,7 +107,8 @@ void UIncineratorAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	const float TargetStrain = FMath::Clamp(SpeedAlpha * 0.6f + WindupBoost + (bIsHostile ? Anger * 0.2f : 0.f), 0.f, 1.f);
 	EngineStrain = FMath::FInterpTo(EngineStrain, TargetStrain, DeltaSeconds, 5.f);
 
-	ShakeTime += DeltaSeconds * ShakeFrequency;
+	// PerlinNoise1D repeats every 256 units, so wrapping keeps float precision over long convention sessions.
+	ShakeTime = FMath::Fmod(ShakeTime + DeltaSeconds * ShakeFrequency, 256.f);
 	const float Amp = ShakeMaxDegrees * EngineStrain;
 	BodyShake = FRotator(
 		FMath::PerlinNoise1D(ShakeTime) * Amp,				// pitch

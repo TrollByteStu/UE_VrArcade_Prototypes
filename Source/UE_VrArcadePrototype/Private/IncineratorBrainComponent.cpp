@@ -123,7 +123,18 @@ void UIncineratorBrainComponent::BeginPlay()
 	// Stagger traces when several Incinerators exist.
 	PerceptionAccumulator = FMath::FRand() * PerceptionInterval;
 
-	ChangeState(EIncineratorState::Idle, true);
+	// Start the engine loop silent; UpdatePresentation fades it in once it moves.
+	// (Otherwise it plays at the BP's default volume until the first movement.)
+	if (EngineAudio)
+	{
+		CurrentEngineVolume = 0.f;
+		CurrentEnginePitch = EnginePitchMin;
+		EngineAudio->SetVolumeMultiplier(CurrentEngineVolume);
+		EngineAudio->SetPitchMultiplier(CurrentEnginePitch);
+	}
+
+	// Respect SetAIEnabled(false) if it was called before BeginPlay.
+	ChangeState(CurrentState == EIncineratorState::Disabled ? EIncineratorState::Disabled : EIncineratorState::Idle, true);
 }
 
 void UIncineratorBrainComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -310,6 +321,11 @@ void UIncineratorBrainComponent::ReportProvocation(float AngerAmount, AActor* In
 	{
 		ChangeState(bCanSeeTarget ? EIncineratorState::Alert : EIncineratorState::Search);
 	}
+	else if (bHostile && CurrentState == EIncineratorState::Search && !bCanSeeTarget && IsValid(Instigator))
+	{
+		// Already searching but got hit from somewhere new: restart the search toward the new position.
+		ChangeState(EIncineratorState::Search, /*bForce*/ true);
+	}
 }
 
 void UIncineratorBrainComponent::HandleOwnerDamaged(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
@@ -358,6 +374,14 @@ bool UIncineratorBrainComponent::IsCombatState(EIncineratorState State) const
 
 void UIncineratorBrainComponent::ChangeState(EIncineratorState NewState, bool bForce)
 {
+	// SetAIEnabled / ReportProvocation / SetHostile are BlueprintCallable and can arrive before BeginPlay
+	// (or on a non-Character owner). EnterState dereferences OwnerCharacter, so bail out instead of crashing.
+	if (!OwnerCharacter)
+	{
+		CurrentState = NewState;
+		return;
+	}
+
 	if (NewState == CurrentState && !bForce)
 	{
 		return;
@@ -759,14 +783,21 @@ void UIncineratorBrainComponent::TickSearch()
 
 void UIncineratorBrainComponent::TickReturn()
 {
+	const FVector OwnerLoc = OwnerCharacter->GetActorLocation();
+
 	// Re-spots a hostile monkey on its turf on the way home.
-	if (bHostile && bCanSeeTarget && IsValid(Target) && IsInsideLeash(Target->GetActorLocation()))
+	// It must be back inside its own leash (with some margin) first. Otherwise, if it walked past the leash edge
+	// while the monkey stands just inside it, it loops Return -> Alert -> Chase -> Return every few frames
+	// (and spams OnTargetSpotted).
+	const float ReengageMargin = FMath::Min(LeashBuffer, LeashRadius * 0.5f);
+	if (bHostile && bCanSeeTarget && IsValid(Target)
+		&& IsInsideLeash(Target->GetActorLocation())
+		&& IsInsideLeash(OwnerLoc, -ReengageMargin))
 	{
 		ChangeState(EIncineratorState::Alert);
 		return;
 	}
 
-	const FVector OwnerLoc = OwnerCharacter->GetActorLocation();
 	if (FVector::Dist2D(OwnerLoc, HomeLocation) <= HomeAcceptRadius)
 	{
 		ChangeState(EIncineratorState::Idle);

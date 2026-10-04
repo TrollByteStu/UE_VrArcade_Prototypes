@@ -6,9 +6,9 @@ VR game in Unreal Engine 5 (student team project). Player is a monkey; built on 
 
 - Engine: UE 5.7 installed at `C:/Program Files/Epic Games/UE_5.7`
 - Project file: `UE_VrArcadePrototype.uproject` (this folder). The repo holds several prototypes (`Content/_MonkeySimulator`, `_KaijuPong`, `_JotunBash_Stuff`); Monkey Simulator is the one we work on here.
-- C++ module: `Source/UE_VrArcadePrototype/` — currently flat (headers and .cpp side by side, no Public/Private split). Keep new files in the same style unless we decide to restructure.
+- C++ module: `Source/UE_VrArcadePrototype/` — mixed layout: the Shark files sit flat in the module root, the Incinerator files (`IncineratorBrainComponent`, `IncineratorAnimInstance`, `AnimNotify_IncineratorHit`) use `Public/` (headers) + `Private/` (.cpp). Put new files in `Public/` + `Private/`.
 - Export macro: `UE_VRARCADEPROTOTYPE_API`
-- Most gameplay is Blueprint. C++ is used for systems that are easier to tune in code (e.g. `USharkBrainComponent`).
+- Most gameplay is Blueprint. C++ is used for systems that are easier to tune in code (e.g. `USharkBrainComponent`, `UIncineratorBrainComponent`).
 
 ## Important Blueprint assets (binary .uasset — you can't read or edit these)
 
@@ -22,6 +22,8 @@ VR game in Unreal Engine 5 (student team project). Player is a monkey; built on 
 When Blueprint logic matters, ask me to paste the nodes (select in editor → Ctrl+C → paste as text). Never pretend to have edited a .uasset — tell me which Blueprint changes I need to make by hand.
 
 ## Build
+
+The `-Project=` paths below are the school PC clone (`C:/Users/STUVR/...`). On Emil's PC the project is at `C:/Users/emil_/UE_VrArcade_Prototypes/` — swap the path to wherever your clone lives.
 
 The editor must be CLOSED (or Live Coding off) before command-line builds. New UCLASS / UENUM / UPROPERTY layout changes need a full build, not Live Coding.
 
